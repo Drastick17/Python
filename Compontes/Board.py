@@ -16,14 +16,22 @@ class Board():
         draw.line(self.screen,self.lineColor,(100*i,10),(100*i,290),8)
   
   def DrawMarks(self):
+      #[[1,0,0]]
+      #[[0,-1,0]]
+      #[[0,0,0]]
     posX = 0
-    for x in self.marks:
+    for x in self.marks: 
+      #[[1,0,0]]
       posY = 0;
       for y in x:
+        #[[1,0,0]] = 1,0,0
+        
         if(y == 1):
+          #dibuja x
           draw.line(self.screen, self.red, (posX * 100 + 15, posY * 100 + 15), (posX * 100 + 85, posY * 100 + 85), 10)
           draw.line(self.screen, self.red, (posX * 100 + 85, posY * 100 + 15), (posX * 100 + 15, posY * 100 + 85), 10)
         if(y == -1):
+          #dibuja o
           draw.circle(self.screen, self.green, (posX * 100 + 50, posY * 100 + 50), 40, 8)
         posY += 1
       posX += 1	  
@@ -31,7 +39,11 @@ class Board():
   def CheckWinner(self):
     posY = 0
     count = 0
+    #[[1,0,0]]
+    #[[1,0,0]]
+    #[[1,0,0]]
     for row in self.marks:
+    #[[1,0,0]]
       if(sum(row) == 3):
         self.gameOver= True
         break;

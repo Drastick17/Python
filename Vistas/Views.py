@@ -20,17 +20,22 @@ class Views():
     self.screen.fill(self.bgcolor)
     #Define game variables
     self.player = 1
+    #si turno = 1 (X) player = 1 
+    #si turno = 2 (O) player = -1
 
     #Fill Board
     for x in range(3):
       row = [0]*3
       self.marks.append(row)
+      #[[1,0,0]]
+      #[[0,-1,0]]
+      #[[0,0,0]]
 
     while True:
       for event in pg.event.get():
         self.Board.DrawLines()
         self.drawTurno()
-        
+        print(self.marks)
         #Handle events
         if event.type == pg.QUIT:
           pg.quit()
@@ -41,8 +46,8 @@ class Views():
         if(event.type == pg.MOUSEBUTTONUP and click):
           click = False
           pos = pg.mouse.get_pos()
-          cellX = pos[0]
-          cellY = pos[1]
+          cellX = pos[0] # x
+          cellY = pos[1] # y
           if(self.marks[cellX // 100][cellY // 100] == 0):
             #get Position of clicked cell
             self.marks[cellX // 100][cellY // 100] = self.player
@@ -127,7 +132,7 @@ class Views():
       pg.display.update()
 
   def StartView(self):
-    background = pg.image.load("../PROYECTS_APPS/curso_de_Python/Juego/media/background.webp")
+    background = pg.image.load("/Users/dannysolano/Desktop/PROYECTS_APPS/curso_de_Python/Juego/media/background.webp")
     self.screen.blit(background,(0,0))
     font = pg.font.SysFont('None', 40)
     renderText = font.render("TRES EN RAYA",True,(90,90,90),)

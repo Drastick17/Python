@@ -1,4 +1,4 @@
-from pygame import mouse, draw, rect, Rect, font
+from pygame import draw, Rect, font
 
 
 class Button():
