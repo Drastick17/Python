@@ -1,5 +1,4 @@
 import pygame as pg
-import sys
 
 from Vistas.Views import Views
 
@@ -15,7 +14,7 @@ class Main():
     
   def Run(self):
     pg.init()
-    pg.display.set_caption("Tres En Raya")
+    pg.display.set_caption("Tres En Raya v.1.1")
     self.views.StartView() 
       #!!pg.draw.rect(self.surface,(255,255,255),(0, 0, 250, 50), 0)
       #!!self.screen.blit(self.surface,(0,0))

@@ -1,36 +1,36 @@
-from pydoc import cli
 import pygame as pg
-import numpy as np
 import sys
 
 from Compontes.Button import Button 
 from Compontes.Board import Board
 
 class Views():
+  bgcolor = (88,191,173)
   def __init__(self, window):
     self.screen = window.screen
-    self.marks = []
-    self.Board = Board(self, self.marks)
-    self.GameOver = False
   
   def GameView(self):
+    self.marks = []
+    self.gameOver = False
+    self.winner= None
+    self.turno = 0;
     click = False
-    self.screen.fill((0,255,255))
-    #Define game variables
-    player = 1
-    #Define Board Marks
     
+    self.Board = Board(self, self.marks, self.gameOver, self.turno)
+    self.screen.fill(self.bgcolor)
+    #Define game variables
+    self.player = 1
 
     #Fill Board
     for x in range(3):
       row = [0]*3
       self.marks.append(row)
 
-
-   
     while True:
       for event in pg.event.get():
         self.Board.DrawLines()
+        self.drawTurno()
+        
         #Handle events
         if event.type == pg.QUIT:
           pg.quit()
@@ -45,23 +45,96 @@ class Views():
           cellY = pos[1]
           if(self.marks[cellX // 100][cellY // 100] == 0):
             #get Position of clicked cell
-            self.marks[cellX // 100][cellY // 100] = player
+            self.marks[cellX // 100][cellY // 100] = self.player
             #Draw mark
             self.Board.DrawMarks()
             #Switch player
-            player *= -1
-          print(self.marks,self.marks)
-          if(len(self.Board.winner) > 0 ):
-            self.GameOver = True
-            print(self.GameOver)
+            self.player *= -1
+            self.turno += 1
+            self.Board.CheckWinner()
             
-    
           
+          
+          if(self.Board.gameOver):
+            self.TryAgayn()
+          if(self.Board.gameOver == False and self.turno == 9):
+            self.Empate()
+       
       pg.display.update()
   
+  def drawTurno(self):
+    self.text = ""
+    if(self.turno%2 == 0):
+     self.text="X"
+    else:
+      self.text="O"
+    pg.display.set_caption(f"Turno de {self.text}")
+
+  def Empate(self):
+    TRY_AGAIN = Button(self)
+    TRY_AGAIN.draw("Try Again",80,140,42,(242,235,211),(54,54,54))
+    SALIR = Button(self)
+    SALIR.draw("QUIT", 80, 190, 42,(242,235,211),(54,54,54))
+
+    empateText = "Empate"
+    font = pg.font.SysFont('None', 35)
+    renderText = font.render(empateText,True,(35,35,35))
+    pg.draw.rect(self.screen,(255,255,255),(0,45,300, renderText.get_height()+10))
+    self.screen.blit(renderText,(int(300 / 2) - int(renderText.get_width() / 2),50)) 
+
+    while True:
+      for event in pg.event.get():
+        TRY_AGAIN.isClicked(pg.mouse)
+        SALIR.isClicked(pg.mouse)
+        if event.type == pg.QUIT:
+          pg.quit()
+          sys.exit()
+        
+        if(TRY_AGAIN.clicked):
+          self.GameView()
+        if(SALIR.clicked):
+          pg.quit()
+          sys.exit()
+
+
+      pg.display.update()  
+    
+  def TryAgayn(self):
+    TRY_AGAIN = Button(self)
+    TRY_AGAIN.draw("Try Again",80,140,42,(242,235,211),(54,54,54))
+    SALIR = Button(self)
+    SALIR.draw("QUIT", 80, 190, 42,(242,235,211),(54,54,54))
+    winnerText = f"El ganador es {self.text}"
+    font = pg.font.SysFont('None', 35)
+    renderText = font.render(winnerText,True,(35,35,35))
+    pg.draw.rect(self.screen,(255,255,255),(0,45,300, renderText.get_height()+10))
+    self.screen.blit(renderText,(int(300 / 2) - int(renderText.get_width() / 2),50)) 
+
+    while True:
+      for event in pg.event.get():
+        TRY_AGAIN.isClicked(pg.mouse)
+        SALIR.isClicked(pg.mouse)
+        if event.type == pg.QUIT:
+          pg.quit()
+          sys.exit()
+        
+        if(TRY_AGAIN.clicked):
+          self.GameView()
+        if(SALIR.clicked):
+          pg.quit()
+          sys.exit()
+
+      pg.display.update()
+
   def StartView(self):
+    background = pg.image.load("../PROYECTS_APPS/curso_de_Python/Juego/media/background.webp")
+    self.screen.blit(background,(0,0))
+    font = pg.font.SysFont('None', 40)
+    renderText = font.render("TRES EN RAYA",True,(90,90,90),)
+    pg.draw.rect(self.screen,(255,255,255),(0,45,300, renderText.get_height()+10))
+    self.screen.blit(renderText,(int(300 / 2) - int(renderText.get_width() / 2),50)) 
     PLAY_BUTTON = Button(self)
-    PLAY_BUTTON.draw("Play",100,125,46)
+    PLAY_BUTTON.draw("Play",110,125,46,(54,54,54),(255,255,255))
     while True:
       for event in pg.event.get():
         PLAY_BUTTON.isClicked(pg.mouse)
