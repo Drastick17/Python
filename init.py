@@ -5,6 +5,7 @@ from Vistas.Views import Views
 #BACKGROUND = pg.image.load("starry_night.jpg").convert()
 class Main():
   def __init__(self, width, height,):
+    
     self.width = width;
     self.height = height;
     self.screen = pg.display.set_mode((self.width,self.height))
